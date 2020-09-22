@@ -2438,7 +2438,7 @@ rai::Graph KOMO::getReport(bool gnuplt, int reportFeatures, std::ostream& featur
           uint d=0;
           if(wasRun) {
             d=task->feat->__dim_phi(configurations({t, t+k_order}));
-            for(uint j=0; j<d; j++) CHECK_EQ(featureTypes(M+j), task->type, "");
+	    //            for(uint j=0; j<d; j++) CHECK_EQ(featureTypes(M+j), task->type, "");
             if(d) {
               if(task->type==OT_sos) {
                 for(uint j=0; j<d; j++) err(t, i) += sqr(featureValues(M+j)); //sumOfSqr(phi.sub(M,M+d-1));
