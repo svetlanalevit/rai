@@ -164,7 +164,9 @@ struct Configuration : GLDrawer {
   arr getJointState(const FrameL&) const;
   arr getJointState(const uintA&) const;
   arr getJointState(const StringA&) const;
-  arr getFrameState(const FrameL& F=FrameL()) const;
+  arr getFrameState() const;
+  arr getFrameState(const FrameL& F) const;
+
   arr naturalQmetric(double power=.5) const;               ///< returns diagonal of a natural metric in q-space, depending on tree depth
   arr getLimits() const;
 
@@ -180,6 +182,7 @@ struct Configuration : GLDrawer {
   void setJointState(const arr& _q, const uintA&);
   void setJointState(const arr& _q, const FrameL&);
   void setFrameState(const arr& X, const StringA& frameNames= {}, bool warnOnDifferentDim=true);
+  void setFrameState(const arr& X, const uintA& frameIDs);
   void setDofsForTree(const arr& q, rai::Frame* root);
   void setTimes(double t);
   void operator=(const arr& X) {

@@ -102,6 +102,7 @@ void Conv_FactoredNLP_BandedNLP::evaluate(arr& phi, arr& J, const arr& x) {
       P.evaluateSingleFeature(i, phi_i, J_i(i), NoArr);
       CHECK_EQ(phi_i.N, d, "");
       if(!!J) CHECK_EQ(J_i.elem(i).d0, d, "");
+      phi.setVectorBlock(phi_i, featDimIntegral(i));
     }
   }
 
@@ -192,4 +193,5 @@ void Conv_FactoredNLP_BandedNLP::evaluate(arr& phi, arr& J, const arr& x) {
       Jaux->computeColPatches(true);
     }
   }
+  P.report();
 }

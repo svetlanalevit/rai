@@ -596,6 +596,10 @@ arr rai::Configuration::getJointState(const StringA& joints) const {
   return x;
 }
 
+arr rai::Configuration::getFrameState() const {
+  return getFrameState(frames);
+}
+
 arr rai::Configuration::getFrameState(const FrameL& F) const {
   if(!F.N) return getFrameState(frames);
   arr X(F.N, 7);
@@ -874,6 +878,15 @@ void rai::Configuration::setFrameState(const arr& X, const StringA& frameNames, 
   checkConsistency();
 //  calc_Q_from_Frames();
   //  if(calc_q_from_X) ensure_q();
+}
+
+void rai::Configuration::setFrameState(const arr& X, const uintA& frameIDs){
+  for(uint i=0;i<frameIDs.N;i++){
+    rai::Frame* f = frames.elem(frameIDs(i));
+    f->X.set(X[i]);
+    f->X.rot.normalize();
+    f->_state_updateAfterTouchingX();
+  }
 }
 
 void rai::Configuration::setDofsForTree(const arr& q, rai::Frame* root) {
