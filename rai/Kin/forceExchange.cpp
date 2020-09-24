@@ -33,9 +33,8 @@ rai::ForceExchange::~ForceExchange() {
 }
 
 void rai::ForceExchange::setZero() {
-//  a_rel.setZero(); b_rel.setZero(); a_norm.setZero(); b_norm.setZero(); a_rad=b_rad=0.; a_type=b_type=1;
   force.resize(3).setZero();
-  position = (.5*(a.ensure_X().pos + b.ensure_X().pos)).getArr();
+  position = .5*a.getPosition() + .5*b.getPosition();
   if(__coll) { delete __coll; __coll=0; }
 }
 

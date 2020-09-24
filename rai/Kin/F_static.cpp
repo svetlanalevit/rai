@@ -81,9 +81,11 @@ void F_netForce::phi(arr& y, arr& J, const rai::Configuration& C) {
     }
   }
 
+
   if(!transOnly){
     y.setBlockVector(force, torque);
-    J.setBlockMatrix(Jforce, Jtorque);
+    if(Jforce.N) J.setBlockMatrix(Jforce, Jtorque);
+    else J.resize(6, C.q.N).setZero();
   }else{
     y=force;
     J=Jforce;

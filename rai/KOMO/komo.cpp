@@ -1491,7 +1491,7 @@ void KOMO::run_prepare(double addInitializationNoise) {
   }
 }
 
-void KOMO::run(const OptOptions options) {
+void KOMO::run(OptOptions options) {
   Configuration::setJointStateCount=0;
   if(verbose>0) {
     cout <<"** KOMO::run solver:"
@@ -1506,6 +1506,7 @@ void KOMO::run(const OptOptions options) {
     cout <<endl;
   }
 
+  options.verbose = rai::MAX(verbose-2, 0);
   double timeZero = rai::realTime();
   CHECK(T, "");
   if(logFile)(*logFile) <<"KOMO_run_log: [" <<endl;
@@ -1709,6 +1710,18 @@ void KOMO::reportProblem(std::ostream& os) {
 //    }
 //    os <<endl;
 //  }
+
+if(verbose>6){
+  os <<"  INITIAL STATE" <<endl;
+#ifdef KOMO_PATH_CONFIG
+  for(rai::Frame* f:pathConfig.frames){
+#else
+  for(auto *C:configurations) for(rai::Frame* f:C->frames){
+#endif
+    if(f->joint && f->joint->dim) os <<"    " <<f->name <<" [" <<f->joint->type <<"] : " <<f->joint->calc_q_from_Q(f->get_Q()) /*<<" - " <<pathConfig.q.elem(f->joint->qIndex)*/ <<endl;
+    for(auto *ex:f->forces) os <<"    " <<f->name <<" [force " <<ex->a.name <<'-' <<ex->b.name <<"] : " <<ex->force /*<<' ' <<ex->torque*/ <<' ' <<ex->position <<endl;
+  }
+  }
 }
 
 void KOMO::checkGradients() {

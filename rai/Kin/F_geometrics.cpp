@@ -58,14 +58,14 @@ void TM_AboveBox::phi(arr& y, arr& J, const rai::Configuration& K) {
 //               <<endl;
   y.resize(4);
   y(0) =  pos(0) - range(0);
-  y(1) = -pos(0) - range(0);
-  y(2) =  pos(1) - range(1);
+  y(1) =  pos(1) - range(1);
+  y(2) = -pos(0) - range(0);
   y(3) = -pos(1) - range(1);
   if(!!J) {
     J.resize(4, posJ.d1);
     J[0] =  posJ[0];
-    J[1] = -posJ[0];
-    J[2] =  posJ[1];
+    J[1] =  posJ[1];
+    J[2] = -posJ[0];
     J[3] = -posJ[1];
   }
 }
