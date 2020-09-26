@@ -2795,11 +2795,13 @@ arr rai::Configuration::getHmetric() const {
   return H;
 }
 
-void rai::Configuration::pruneRigidJoints(int verbose) {
+void rai::Configuration::pruneRigidJoints(bool alsoInactive) {
   rai::Joint* j;
   for(Frame* f:frames) if((j=f->joint)) {
-      if(j->type == rai::JT_rigid) delete j; //that's all there is to do
-    }
+    if(j->type==rai::JT_rigid) delete j; //that's all there is to do
+    else if(alsoInactive && !j->active) delete j;
+  }
+  if(alsoInactive) reset_q();
 }
 
 void rai::Configuration::reconnectLinksToClosestJoints() {
