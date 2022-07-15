@@ -60,7 +60,7 @@ void glColor(const arr& col);
 void id2color(byte rgb[3], uint id);
 arr id2color(uint id);
 uint color2id(byte rgb[3]);
-void glDrawText(const char* txt, float x=0., float y=0., float z=0., bool largeFont=false);
+void glDrawText(const char* txt, float x=0., float y=0., float z=0., bool largeFont=false, int textFont = 1);
 //void glShadowTransform();
 void glTransform(const rai::Transformation& t);
 void glTransform(const double pos[3], const double R[12]);
@@ -139,6 +139,7 @@ struct OpenGL {
   bool offscreen;
   rai::Camera camera;     ///< the camera used for projection
   rai::String text;        ///< the text to be drawn as title within the opengl frame
+  int textFont;
   float clearR, clearG, clearB, clearA;  ///< colors of the beackground (called in glClearColor(...))
   bool reportEvents, reportSelects;    ///< flags for verbosity
   int pressedkey;         ///< stores the key pressed

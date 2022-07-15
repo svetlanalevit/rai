@@ -707,17 +707,45 @@ static GLboolean glLightIsOn = false;
 void glPushLightOff() { glGetBooleanv(GL_LIGHTING, &glLightIsOn); glDisable(GL_LIGHTING); }
 void glPopLight() { if(glLightIsOn) glEnable(GL_LIGHTING); }
 
-void glDrawText(const char* txt, float x, float y, float z, bool largeFont) {
+void glDrawText(const char* txt, float x, float y, float z, bool largeFont, int textFont) {
   if(!txt) return;
   glDisable(GL_DEPTH_TEST);
   glPushLightOff();
   glRasterPos3f(x, y, z);
   void* font=GLUT_BITMAP_HELVETICA_12;
+  switch(textFont){
+    case 0:
+      font = GLUT_BITMAP_HELVETICA_10;
+      break;
+    case 1:
+      font = GLUT_BITMAP_HELVETICA_12;
+      break;
+    case 2:
+      font = GLUT_BITMAP_HELVETICA_18;
+      break;
+    case 3:
+      font = GLUT_BITMAP_TIMES_ROMAN_10;
+      break;
+    case 4:
+      font =  GLUT_BITMAP_TIMES_ROMAN_24;      
+      break;
+    case 5:
+      font =  GLUT_BITMAP_8_BY_13;
+      break;
+    case 6:
+      font = GLUT_BITMAP_9_BY_15;
+      break;
+    default:
+      font = GLUT_BITMAP_HELVETICA_12;
+  }
   if(largeFont) font = GLUT_BITMAP_HELVETICA_18;
+  int space = 15;
+  if(textFont == 2) space = 18;
+  if(textFont == 4) space = 20;
   while(*txt) {
     switch(*txt) {
       case '\n':
-        y+=15;
+        y+=space;
         glRasterPos3f(x, y, z);
         break;
       case '\b':
@@ -1530,7 +1558,7 @@ void glDrawCylinder(float, float, bool) { NICO }
 void glStandardScene(void*, OpenGL&) { NICO }
 void glStandardOriginAxes(void*, OpenGL&) { NICO }
 uint glImageTexture(const byteA& img) { NICO }
-void glDrawText(const char* txt, float x, float y, float z, bool largeFont) { NICO }
+void glDrawText(const char* txt, float x, float y, float z, bool largeFont, int textFont) { NICO }
 void glDrawTexQuad(uint texture,
                    float x1, float y1, float z1, float x2, float y2, float z2,
                    float x3, float y3, float z3, float x4, float y4, float z4,
@@ -1601,6 +1629,7 @@ void OpenGL::init() {
   exitkeys="";
 
   backgroundZoom=1;
+  textFont = 1; //HELVETICA_12
 };
 
 struct CstyleDrawer : GLDrawer {
@@ -1825,7 +1854,7 @@ void OpenGL::Draw(int w, int h, rai::Camera* cam, bool callerHasAlreadyLocked) {
     if(clearR+clearG+clearB>1.) glColor(0.0, 0.0, 0.0, 1.0); else glColor(1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glOrtho(0., (double)w, (double)h, .0, -1., 1.);
-    glDrawText(text, 10, 20, 0);
+    glDrawText(text, 10, 20, 0, false, textFont);
     glLoadIdentity();
   }
 
