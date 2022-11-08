@@ -196,7 +196,9 @@ void rai::CameraView::updateCamera() {
 
 void rai::CameraView::glDraw(OpenGL& gl) {
   if(renderMode==all || renderMode==visuals) {
-    glStandardScene(nullptr, gl);
+//    glStandardScene(nullptr, gl);
+    glStandardLight(nullptr, gl);
+
     gl.drawOptions.drawMode_idColor = false;
     if(renderMode==visuals) {
       gl.drawOptions.drawVisualsOnly=true;

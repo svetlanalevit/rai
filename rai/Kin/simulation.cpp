@@ -467,10 +467,11 @@ struct Simulation_DisplayThread : Thread, GLDrawer {
   Simulation_DisplayThread(const Configuration& C)
     : Thread("Sim_DisplayThread", .05),
       Ccopy(C),
-      gl("Simulation Display") {
+      gl("Simulation Display", 640, 480) {
     gl.add(*this);
-    gl.camera.setDefault();
-    gl.addClickCall(new MoveBallHereCallback());///added
+    gl.camera.setPosition(0., 0., 12.);
+
+   /// gl.addClickCall(new MoveBallHereCallback());///added
 
     threadLoop();
     while(step_count<2) rai::wait(.05);
@@ -488,7 +489,9 @@ struct Simulation_DisplayThread : Thread, GLDrawer {
   void glDraw(OpenGL& gl) {
 #ifdef RAI_GL
     mux.lock(RAI_HERE);
-    glStandardScene(nullptr, gl);
+//    glStandardScene(nullptr, gl);
+    glStandardLight(nullptr, gl);
+
     Ccopy.glDraw(gl);
 
     if(image.N && depth.N) {
@@ -499,7 +502,10 @@ struct Simulation_DisplayThread : Thread, GLDrawer {
         x = 100.f * depth.elem(i); //this means that the RGB values are cm distance (up to 255cm distance)
         dep.elem(i) = (x<0.)?0:((x>255.)?255:x);
       }
-      float scale = .3*float(gl.width)/image.d1;
+
+      float scale = 1.0;
+
+
       float top = 1. - scale*float(image.d0)/gl.height;
 
       glMatrixMode(GL_PROJECTION);
@@ -508,8 +514,8 @@ struct Simulation_DisplayThread : Thread, GLDrawer {
       glLoadIdentity();
       glOrtho(0, 1., 1., 0., -1., 1.); //only affects the offset - the rest is done with raster zooms
       glDisable(GL_DEPTH_TEST);
-      glRasterImage(.0, top, image, scale);
-      glRasterImage(.7, top, dep, scale);
+      glRasterImage(.0, .0, image, scale);
+
     }
 
     screenshot.resize(gl.height, gl.width, 3);
