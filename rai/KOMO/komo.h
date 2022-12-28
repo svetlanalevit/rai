@@ -198,6 +198,8 @@ public:
 
   int view(bool pause=false, const char* txt=nullptr);
   int view_play(bool pause=false, double delay=.2, const char* saveVideoPath=nullptr);
+  int view_play_title(bool pause=false, double delay=.2, const char* saveVideoPath=nullptr, const char* title=nullptr);
+
 
   void plotTrajectory();
   void plotPhaseTrajectory();
